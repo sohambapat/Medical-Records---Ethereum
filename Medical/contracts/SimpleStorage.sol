@@ -2,12 +2,39 @@ pragma solidity ^0.5.0;
 
 contract SimpleStorage {
   string ipfsHash;
+  string firstName;
+  string lastName;
+  string date;
 
-  function set(string memory x) public {
-    ipfsHash = x;
+ 
+  struct Records {
+  	uint recordCount;
+  	string _firstName;
+  	string _lastName;
+  	string doctor;
+  	string treatmentSite;
+  	string date;
+  	string ipfsHash;
   }
 
-  function get() public view returns (string memory) {
-    return ipfsHash;
+  mapping(address => Records[]) public people;
+
+  function set(address _address, string memory _doctor, string memory _site, string memory x, string memory _firstName, string memory _lastName, string memory _date) public{
+  	uint index = people[_address].length;
+  	people[_address].push(Records(index, _firstName, _lastName, _doctor, _site, _date, x));
   }
+
+  function setPermission(uint i, address toAddress) public{
+  	people[toAddress].push(people[msg.sender][i]);
+  }
+
 }
+
+
+
+// web3.eth.getCoinbase(function(err, account) {
+//       if (err === null) {
+//         App.account = account;
+//         $("#accountAddress").html("Your Account: " + account);
+//       }
+// })
