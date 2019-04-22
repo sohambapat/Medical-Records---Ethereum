@@ -30,11 +30,3 @@ contract SimpleStorage {
 
 }
 
-
-
-// web3.eth.getCoinbase(function(err, account) {
-//       if (err === null) {
-//         App.account = account;
-//         $("#accountAddress").html("Your Account: " + account);
-//       }
-// })
