@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./utils/getWeb3";
 import ipfs from './ipfs'
+// import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom'
 
 import "./App.css";
 
@@ -52,15 +53,15 @@ class App extends Component {
 
     // Get accounts.
     this.state.web3.eth.getAccounts((error, accounts) => {
-      simpleStorage.deployed().then((instance) => {
-        this.simpleStorageInstance = instance
-        this.setState({ account: accounts[0] })
-        // Get the value from the contract to prove it worked.
-        return this.simpleStorageInstance.get.call(accounts[0])
-      }).then((ipfsHash) => {
-        // Update state with the result.
-        return this.setState({ ipfsHash })
-      })
+      // simpleStorage.deployed().then((instance) => {
+      //   this.simpleStorageInstance = instance
+      //   this.setState({ account: accounts[0] })
+      //   // Get the value from the contract to prove it worked.
+      //   return this.simpleStorageInstance.get.call(accounts[0])
+      // }).then((ipfsHash) => {
+      //   // Update state with the result.
+      //   return this.setState({ ipfsHash })
+      // })
     })
   }
 
@@ -92,9 +93,6 @@ class App extends Component {
   }
 
   render() {
-    if (!this.state.web3) {
-      return <div>Loading Web3, accounts, and contract...</div>
-    }
     return (
       <div className="App">
         <nav className="navbar pure-menu pure-menu-horizontal">
