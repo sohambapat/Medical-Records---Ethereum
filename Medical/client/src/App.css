@@ -2,6 +2,7 @@
 body,
 .pure-g [class*=pure-u] {
   font-family: 'Open Sans', sans-serif;
+  background-color: #F7F9F9;
 }
 
 h1, h2, h3 {
@@ -35,7 +36,7 @@ code {
 
 /* NAVBAR */
 
-.navbar {
+/*.navbar {
   position: fixed;
   padding: 5px;
   background: #0c1a2b;
@@ -64,4 +65,4 @@ code {
 .navbar .uport-logo {
   height: 16px;
   margin-right: 10px;
-}
+}*/

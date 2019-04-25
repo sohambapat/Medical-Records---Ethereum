@@ -19,7 +19,6 @@ class App extends Component {
     this.captureFile = this.captureFile.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
-  //state = { ipfsHash: '', web3: null, accounts: null, contract: null };
 
   componentWillMount() {
     // Get network provider and web3 instance.
@@ -94,25 +93,80 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <nav className="navbar pure-menu pure-menu-horizontal">
-          <a href="#" className="pure-menu-heading pure-menu-link">IPFS File Upload DApp</a>
+      <div>
+        <nav className="navbar navbar-dark bg-dark">
+          <a className="navbar-brand" href="#"><i className="fas fa-laptop-medical" /></a>
         </nav>
-
-        <main className="container">
-          <div className="pure-g">
-            <div className="pure-u-1-1">
-              <h1>Your Image</h1>
-              <p>This image is stored on IPFS & The Ethereum Blockchain!</p>
-              <img src="{`https://ipfs.io/ipfs/${this.state.ipfsHash}`}" alt=""/>
-              <h2>Upload Image</h2>
-              <form onSubmit={this.onSubmit} >
-                <input type='file' onChange={this.captureFile} />
-                <input type='submit' />
+        <div className="container">
+          <h1>Oluwafisayo Oke</h1>
+          <br />
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Doctor</th>
+                <th scope="col">Hospital</th>
+                <th scope="col">Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark Make</td>
+                <td>Grady Hospital</td>
+                <td>2/2/19</td>
+                <td><button type="button" className="btn btn-success btn-sm">View</button></td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Amaka Agu</td>
+                <td>Kaiser Permanente</td>
+                <td>6/4/19</td>
+                <td><button type="button" className="btn btn-success btn-sm">View</button></td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>Larry Bird</td>
+                <td>Celtics Hospital</td>
+                <td>6/5/20</td>
+                <td><button type="button" className="btn btn-success btn-sm">View</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <p id="accountAddress" className="text-center">0x305F746cB05dc1393bB3e27D0054dc583400f662</p>
+          <p>
+            <a className="btn btn-dark" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Set Permission</strong></a> <span> </span>
+            <a className="btn btn-dark" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Add Record</strong></a>
+          </p>
+          <div className="collapse multi-collapse" id="multiCollapseExample2">
+            <div className="card card-body">
+              <form className="form-inline">
+                <div className="form-group">
+                  <label htmlFor="exampleFormControlFile1">Upload File</label>
+                  <input type="file" className="form-control-file" id="exampleFormControlFile1" />
+                </div>
+                <button type="submit" className="btn btn-dark btn-sm mb-2">Submit</button>
               </form>
             </div>
           </div>
-        </main>
+          <div className="collapse multi-collapse" id="multiCollapseExample1">
+            <div className="card card-body">
+              <form>
+                <div className="form-row">
+                  <div className="col-7">
+                    <input type="text" className="form-control" placeholder="Account" />
+                  </div>
+                  <div className="col">
+                    <input type="text" className="form-control" placeholder="#" />
+                  </div>
+                  <div className="col">
+                    <button type="submit" className="btn btn-dark btn-sm mb-2">Submit</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
