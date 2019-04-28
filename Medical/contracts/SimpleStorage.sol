@@ -2,12 +2,6 @@ pragma solidity ^0.5.0;
 pragma experimental ABIEncoderV2;
 
 contract SimpleStorage {
-  string ipfsHash;
-  string firstName;
-  string lastName;
-  string date;
-
- 
   struct Records {
   	uint recordCount;
   	string _firstName;
@@ -19,6 +13,7 @@ contract SimpleStorage {
   }
 
   mapping(address => Records[]) public users;
+  mapping(address => string) public status;
 
   function set(address _address, string memory _doctor, string memory _site, string memory x, string memory _firstName, string memory _lastName, string memory _date) public{
   	require(msg.sender != _address);
@@ -30,8 +25,8 @@ contract SimpleStorage {
       return users[_address].length;
   }
 
-  function getRecord(address _address, uint index) public view returns (Records memory){
-      return users[_address][index];
+  function getRecords(address _address) public view returns (Records[] memory){
+      return users[_address];
   }
 
   function setPermission(uint i, address toAddress) public{
