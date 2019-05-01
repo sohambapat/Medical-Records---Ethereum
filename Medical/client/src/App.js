@@ -21,7 +21,7 @@ class App extends Component {
       web3: null,
       buffer: null,
       account: null,
-      records: [[1, "Thanos", "Bolton", "Robert Snow", "Stark Hospital", "05/23/19", "QmcnAqpXWf4S8RCobSq38bXJVjJ3LL6SiRP3s6GsjRoogM"]],
+      records: [],
       status: "Medical Center"
 
     }
@@ -50,19 +50,19 @@ class App extends Component {
     const simpleStorage = contract(SimpleStorageContract)
     simpleStorage.setProvider(this.state.web3.currentProvider)
 
-
     // Get account.
     this.state.web3.eth.getCoinbase((error, account) => {
-      // simpleStorage.deployed().then((instance) => {
-      //   this.simpleStorageInstance = instance
-      //   this.setState({account : account})
-      //   // Get the value from the contract to prove it worked.
-      //   console.log(this.state.account)
-      //   return this.simpleStorageInstance.getRecords(account).call({from: account})
-      //  }).then((records) => {
-      // //   // Update state with the result.
-      //    return this.setState({ records })
-      // })
+      simpleStorage.deployed()
+      .then((instance) => {
+        this.simpleStorageInstance = instance
+        this.setState({account : account})
+        console.log(this.simpleStorageInstance)
+        // Get the value from the contract to prove it worked.
+          return this.simpleStorageInstance.getRecords(account, {from: account})
+       }).then((records) => {
+      //   // Update state with the result.
+         return this.setState({ records })
+      })
     })
   }
   handleInputChange = (event) => {
