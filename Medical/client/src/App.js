@@ -11,12 +11,19 @@ class App extends Component {
     super(props)
 
     this.state = {
+      firstName: null,
+      lastName: null,
+      doctorName: null,
+      hospitalName: null,
+      toAccount: null,
+      date: null,
       ipfsHash: '',
       web3: null,
       buffer: null,
       account: null,
-      records: [],
-      status: "Doctor"
+      records: [[1, "Thanos", "Bolton", "Robert Snow", "Stark Hospital", "05/23/19", "QmcnAqpXWf4S8RCobSq38bXJVjJ3LL6SiRP3s6GsjRoogM"]],
+      status: "Medical Center"
+
     }
     this.captureFile = this.captureFile.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -30,15 +37,6 @@ class App extends Component {
       this.setState({
         web3: results.web3
       })
-
-      // Instantiate contract once web3 provided.
-
-      // web3.eth.getCoinbase(function(err, account) {
-      //   if (err === null) {
-      //     this.setState({ account: account })
-      //     $("#accountAddress").html("Your Account: " + account);
-      //   }
-      // });
 
       this.instantiateContract()
     })
@@ -57,42 +55,128 @@ class App extends Component {
     this.state.web3.eth.getCoinbase((error, account) => {
       // simpleStorage.deployed().then((instance) => {
       //   this.simpleStorageInstance = instance
-      //   this.setState({ account : account[0] })
+      //   this.setState({account : account})
       //   // Get the value from the contract to prove it worked.
-      //   return this.simpleStorageInstance.getRecords(account).call({from: {account}})
-      // }).then((records) => {
-      //   // Update state with the result.
-      //   return this.setState({ records })
+      //   console.log(this.state.account)
+      //   return this.simpleStorageInstance.getRecords(account).call({from: account})
+      //  }).then((records) => {
+      // //   // Update state with the result.
+      //    return this.setState({ records })
       // })
     })
   }
-
-
-  captureFile(event) {
+  handleInputChange = (event) => {
     event.preventDefault()
-    // const file = event.target.files[0]
-    // const reader = new window.FileReader()
-    // reader.readAsArrayBuffer(file)
-    // reader.onloadend = () => {
-    //   this.setState({ buffer: Buffer(reader.result) })
-     // console.log('buffer', this.state.buffer)
-     console.log("captured file")
-    //}
+    //console.log(event.target.name + " " + event.target.value)
+    this.setState({[event.target.name]: event.target.value})
+    //console.log(event.target.name + " " + this.state.firstName)
+  }
+
+  captureFile = (event) => {
+    event.preventDefault()
+    const file = event.target.files[0]
+    const reader = new window.FileReader()
+    reader.readAsArrayBuffer(file)
+    reader.onloadend = () => {
+      this.setState({ buffer: Buffer(reader.result) })
+     console.log('buffer', this.state.buffer)
+    // console.log("captured file")
+    }
   }
 
   onSubmit(event) {
     event.preventDefault()
-    // ipfs.files.add(this.state.buffer, (error, result) => {
-    //   if(error) {
-    //     console.error(error)
-    //     return
-    //   }
-    //   this.simpleStorageInstance.set(result[0].hash, { from: this.state.account }).then((r) => {
-    //     return this.setState({ ipfsHash: result[0].hash })
-    //     //console.log('ifpsHash', this.state.ipfsHash)
-    //   })
-    // })
+    ipfs.files.add(this.state.buffer, (error, result) => {
+      if(error) {
+        console.error(error)
+        return
+      }
+      this.simpleStorageInstance.set(result[0].hash, { from: this.state.account }).then((r) => {
+        return this.setState({ ipfsHash: result[0].hash })
+        console.log('ifpsHash', this.state.ipfsHash)
+      })
+    })
+
+
+    console.log(this.state.firstName + this.state.lastName + this.state.doctorName + this.state.hospitalName +this.state.date)
   }
+
+  patientCreateTableHeader = ()=>{
+    let tableHeader = []
+    tableHeader.push(<th scope="col">#</th>)
+    tableHeader.push(<th scope="col">Doctor</th>)
+    tableHeader.push(<th scope="col">Hospital</th>)
+    tableHeader.push(<th scope="col">Date</th>)
+    tableHeader.push(<th scope="col" />)
+
+    return <tr>{tableHeader}</tr>
+  }
+
+  patientCreateTableBody = ()=>{
+    let tableBody = []
+
+    for(let i=0; i<this.state.records.length;i++){
+      let children = []
+
+      children.push(<th scope="row">{this.state.records[i][0]}</th>)
+      children.push(<td>{this.state.records[i][3]}</td>)
+      children.push(<td>{this.state.records[i][4]}</td>)
+      children.push(<td>{this.state.records[i][5]}</td>)
+      children.push(<td><a className="btn btn-success btn-sm" href={`https://ipfs.io/ipfs/${this.state.records[i][6]}`} role="button">View</a></td>)
+
+      tableBody.push(<tr>{children}</tr>)
+    }
+    return tableBody
+    
+  }
+
+  doctorCreateTableHeader = ()=>{
+    let tableHeader = []
+    tableHeader.push(<th scope="col">#</th>)
+    tableHeader.push(<th scope="col">First Name</th>)
+    tableHeader.push(<th scope="col">Last Name</th>)
+    tableHeader.push(<th scope="col">Doctor</th>)
+    tableHeader.push(<th scope="col">Hospital</th>)
+    tableHeader.push(<th scope="col">Date</th>)
+    tableHeader.push(<th scope="col" />)
+
+    return <tr>{tableHeader}</tr>
+  }
+
+  doctorCreateTableBody = ()=>{
+    let tableBody = []
+
+    for(let i=0; i<this.state.records.length;i++){
+      let children = []
+
+      children.push(<th scope="row">{this.state.records[i][0]}</th>)
+      children.push(<td>{this.state.records[i][1]}</td>)
+      children.push(<td>{this.state.records[i][2]}</td>)
+      children.push(<td>{this.state.records[i][3]}</td>)
+      children.push(<td>{this.state.records[i][4]}</td>)
+      children.push(<td>{this.state.records[i][5]}</td>)
+      children.push(<td><a className="btn btn-success btn-sm" href={`https://ipfs.io/ipfs/${this.state.records[i][6]}`} role="button">View</a></td>)
+
+      tableBody.push(<tr>{children}</tr>)
+    }
+
+    return tableBody
+    
+  }
+
+  userPageName = ()=>{
+    if(this.state.records.length > 0 && this.state.status === "Individual"){
+      return <h1>{this.state.records[0][1]} {this.state.records[0][2]} </h1>
+   }
+   else if(this.state.records.length > 0 && this.state.status === "Medical Center"){
+      return <h1>{this.state.records[0][4]}</h1>
+   }
+    else{
+      return <h1>User</h1>
+    }
+  }
+
+
 
 
   render() {
@@ -100,6 +184,9 @@ class App extends Component {
     let permissionButtonRender;
     let addButtonType;
     let addButtonRender;
+    let tableHeader;
+    let tableBody;
+    let pageName;
 
     if(this.state.status === "Individual"){
         permissionButtonType = <a style={{backgroundColor: '#18232E', color: 'white'}} className="btn" data-toggle="collapse"  href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Set Permission</strong></a>
@@ -139,9 +226,13 @@ class App extends Component {
                               </div>
                             </div>
                           </div>
+        tableHeader = this.patientCreateTableHeader()
+        tableBody = this.patientCreateTableBody()
+        pageName =  this.userPageName()
+
     
     }
-    else if(this.state.status === "Doctor"){
+    else if(this.state.status === "Medical Center"){
       permissionButtonType = <a style={{backgroundColor: '#18232E', color: 'white'}} className="btn" data-toggle="modal" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Set Permission</strong></a>
       permissionButtonRender =<div className="modal fade" id="multiCollapseExample1" tabIndex={-1} role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div className="modal-dialog modal-dialog-centered" role="document">
@@ -164,38 +255,47 @@ class App extends Component {
       addButtonType = <a style={{backgroundColor: '#18232E', color: 'white'}} className="btn" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Add Record</strong></a>
       addButtonRender = <div className="collapse multi-collapse col-md-6" id="multiCollapseExample2">
                           <div className="card card-body" style={{backgroundColor: '#18232E', color: 'white'}}>
-                            <form>
+                            <form onSubmit={this.onSubmit}>
                               <div className="form-group">
                                 <label htmlFor="doctorName"><strong>Doctor</strong></label>
-                                <input type="text" className="form-control form-control-sm" id="doctorName" />
+                                <input type="text" className="form-control form-control-sm" id="doctorName" name="doctorName" onChange = {this.handleInputChange}/>
                               </div>
                               <div className="form-group">
                                 <label htmlFor="hospital"><strong>Hospital</strong></label>
-                                <input type="text" className="form-control form-control-sm" id="hospital" />
+                                <input type="text" className="form-control form-control-sm" id="hospital" name="hospitalName" onChange = {this.handleInputChange}/>
                               </div>
                               <div className="form-group">
                                 <label htmlFor="fName"><strong>First Name</strong></label>
-                                <input type="text" className="form-control form-control-sm" id="fName" />
+                                <input type="text" className="form-control form-control-sm" id="fName" name="firstName" onChange = {this.handleInputChange} />
                               </div>
                               <div className="form-group">
                                 <label htmlFor="lName"><strong>Last Name</strong></label>
-                                <input type="text" className="form-control form-control-sm" id="lName" />
+                                <input type="text" className="form-control form-control-sm" id="lName" name="lastName" onChange = {this.handleInputChange}/>
                               </div>
                               <div className="form-group">
                                 <label htmlFor="account"><strong>Account</strong></label>
-                                <input type="text" className="form-control form-control-sm" id="account" />
+                                <input type="text" className="form-control form-control-sm" id="account" name="toAccount" onChange = {this.handleInputChange}/>
                               </div>
                               <div className="form-group">
                                 <input type="file" className="form-control-file" id="exampleFormControlFile1" onChange={this.captureFile}/>
                               </div>
                               <div className="form-group">
                                 <label htmlFor="date"><strong>Date</strong></label>
-                                <input className="form-control form-control-sm col-md-3" id="date" name="date" placeholder="MM/DD/YYY" type="text" />
+                                <input className="form-control form-control-sm col-md-3" id="date" type="text" name="date" onChange = {this.handleInputChange}/>
                               </div>
+
+                              
+
+                        
                               <button type="submit" className="btn btn-info btn-sm mb-2">Submit</button>
                             </form>
                           </div>
                         </div>
+
+      tableHeader = this.doctorCreateTableHeader()
+      tableBody = this.doctorCreateTableBody()
+      pageName = this.userPageName()
+
 
 
     }
@@ -210,7 +310,7 @@ class App extends Component {
         <div className="container">
           <div className="jumbotron" style={{backgroundColor: '#18232E', color: 'white', marginTop: '1%'}}>
             <div className>
-              <h1 className="display-4">Welcome to ....</h1>
+              <h1 className="display-4">Welcome</h1>
               <p className="lead" />
             </div>
           </div>
@@ -227,7 +327,7 @@ class App extends Component {
                   <option value={2}>Individual</option>
                 </select>
               </div>
-              <p className="card-text">0x305F746cB05dc1393bB3e27D0054dc583400f662</p>
+              <p className="card-text">{this.state.account}</p>
               <a href="#" className="btn btn-primary">Submit</a>
             </div>
           </div>
@@ -245,43 +345,19 @@ class App extends Component {
           </a>
         </nav>
         <div className="container">
-          <h1>Oluwafisayo Oke</h1>
+
+          {pageName}
           <br />
           <table className="table table-striped">
             <thead style={{backgroundColor: '#18232E', color: 'white'}}>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Doctor</th>
-                <th scope="col">Hospital</th>
-                <th scope="col">Date</th>
-                <th scope="col" />
-              </tr>
+              {tableHeader}
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark Make</td>
-                <td>Grady Hospital</td>
-                <td>2/2/19</td>
-                <td><button type="button" className="btn btn-success btn-sm">View</button></td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob Jake</td>
-                <td>Emory Hospital</td>
-                <td>6/4/19</td>
-                <td><button type="button" className="btn btn-success btn-sm">View</button></td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry Bird</td>
-                <td>Celtics Hospital</td>
-                <td>6/5/20</td>
-                <td><button type="button" className="btn btn-success btn-sm">View</button></td>
-              </tr>
+              {tableBody}
             </tbody>
           </table>
-          <p id="accountAddress" className="text-center">0x305F746cB05dc1393bB3e27D0054dc583400f662</p>
+          <hr />
+          <p id="accountAddress" className="text-center">{this.state.account}</p>
           <p>
             {permissionButtonType}
             <span> </span>{addButtonType}
