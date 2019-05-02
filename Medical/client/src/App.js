@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./utils/getWeb3";
 import ipfs from './ipfs'
+import ksuLogo from "./logo50.jpg";
 // import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom'
 
 import "./App.css";
@@ -22,7 +23,7 @@ class App extends Component {
       buffer: null,
       account: null,
       records: [],
-      status: "Medical Center"
+      status: "Individua"
 
     }
     this.captureFile = this.captureFile.bind(this);
@@ -70,6 +71,7 @@ class App extends Component {
     //console.log(event.target.name + " " + event.target.value)
     this.setState({[event.target.name]: event.target.value})
     //console.log(event.target.name + " " + this.state.firstName)
+
   }
 
   captureFile = (event) => {
@@ -91,14 +93,12 @@ class App extends Component {
         console.error(error)
         return
       }
-      this.simpleStorageInstance.set(result[0].hash, { from: this.state.account }).then((r) => {
+      this.simpleStorageInstance.set(this.state.toAccount, this.state.doctorName,this.state.hospitalName, result[0].hash, this.state.firstName, this.state.lastName, this.state.date , { from: this.state.account }).then((r) => {
         return this.setState({ ipfsHash: result[0].hash })
         console.log('ifpsHash', this.state.ipfsHash)
       })
     })
-
-
-    console.log(this.state.firstName + this.state.lastName + this.state.doctorName + this.state.hospitalName +this.state.date)
+    //console.log(this.state.firstName + this.state.lastName + this.state.doctorName+ this.state.toAccount + this.state.hospitalName +this.state.date)
   }
 
   patientCreateTableHeader = ()=>{
@@ -189,9 +189,9 @@ class App extends Component {
     let pageName;
 
     if(this.state.status === "Individual"){
-        permissionButtonType = <a style={{backgroundColor: '#18232E', color: 'white'}} className="btn" data-toggle="collapse"  href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Set Permission</strong></a>
+        permissionButtonType = <a style={{backgroundColor: '#18232E', color: '#ffc629'}} className="btn" data-toggle="collapse"  href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Set Permission</strong></a>
         permissionButtonRender =<div className="collapse multi-collapse col-md-6" id="multiCollapseExample1">
-                                  <div className="card card-body" style={{backgroundColor: '#18232E', color: 'white'}}>
+                                  <div className="card card-body" style={{backgroundColor: '#18232E', color: '#ffc629'}}>
                                     <form>
                                       <div className="form-row">
                                         <div className="col-9">
@@ -207,7 +207,7 @@ class App extends Component {
                                     </form>
                                   </div>
                                 </div>
-        addButtonType = <a style={{backgroundColor: '#18232E', color: 'white'}} className="btn" data-toggle="modal" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Add Record</strong></a>
+        addButtonType = <a style={{backgroundColor: '#18232E', color: '#ffc629'}} className="btn" data-toggle="modal" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Add Record</strong></a>
         addButtonRender = <div className="modal fade" id="multiCollapseExample2" tabIndex={-1} role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div className="modal-dialog modal-dialog-centered" role="document">
                               <div className="modal-content">
@@ -233,7 +233,7 @@ class App extends Component {
     
     }
     else if(this.state.status === "Medical Center"){
-      permissionButtonType = <a style={{backgroundColor: '#18232E', color: 'white'}} className="btn" data-toggle="modal" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Set Permission</strong></a>
+      permissionButtonType = <a style={{backgroundColor: '#18232E', color: '#ffc629'}} className="btn" data-toggle="modal" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Set Permission</strong></a>
       permissionButtonRender =<div className="modal fade" id="multiCollapseExample1" tabIndex={-1} role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div className="modal-dialog modal-dialog-centered" role="document">
                                   <div className="modal-content">
@@ -252,9 +252,9 @@ class App extends Component {
                                   </div>
                                 </div>
                               </div>
-      addButtonType = <a style={{backgroundColor: '#18232E', color: 'white'}} className="btn" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Add Record</strong></a>
+      addButtonType = <a style={{backgroundColor: '#18232E', color: '#ffc629'}} className="btn" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Add Record</strong></a>
       addButtonRender = <div className="collapse multi-collapse col-md-6" id="multiCollapseExample2">
-                          <div className="card card-body" style={{backgroundColor: '#18232E', color: 'white'}}>
+                          <div className="card card-body" style={{backgroundColor: '#18232E', color: '#ffc629'}}>
                             <form onSubmit={this.onSubmit}>
                               <div className="form-group">
                                 <label htmlFor="doctorName"><strong>Doctor</strong></label>
@@ -302,19 +302,21 @@ class App extends Component {
     else{
       return(
       <div>
-        <nav className="navbar" style={{backgroundColor: '#18232E'}}>
-          <a className="navbar-brand" href="#" style={{color: 'white'}}>
+        <nav className="navbar" style={{backgroundColor: '#000000'}}>
+          <a className="navbar-brand" href="#" style={{color: '#ffb51f'}}>
             <i className="fas fa-laptop-medical" />
+
           </a>
+          <img src= {ksuLogo} style={{float: 'right'}} />
         </nav>
         <div className="container">
-          <div className="jumbotron" style={{backgroundColor: '#18232E', color: 'white', marginTop: '1%'}}>
+          <div className="jumbotron" style={{backgroundColor: '#000000', color: '#ffb51f', marginTop: '1%'}}>
             <div className>
-              <h1 className="display-4">Welcome</h1>
+              <h1 className="display-4">KSU Medical BC</h1>
               <p className="lead" />
             </div>
           </div>
-          <div className="card col-md-6" style={{backgroundColor: '#18232E', color: 'white', marginLeft: '25%'}}>
+          <div className="card col-md-6" style={{backgroundColor: '#000000', color: '#ffb51f', marginLeft: '25%'}}>
             <h5 className="card-header">Sign Up</h5>
             <div className="card-body">
               <div className="input-group mb-3">
@@ -339,17 +341,18 @@ class App extends Component {
 
     return (
       <div>
-        <nav className="navbar" style={{backgroundColor: '#18232E'}}>
-          <a className="navbar-brand" href="#" style={{color: 'white'}}>
+        <nav className="navbar" style={{backgroundColor: '#000000'}}>
+          <a className="navbar-brand" href="#" style={{color: '#ffc629'}}>
             <i className="fas fa-laptop-medical" />
           </a>
+            <img src= {ksuLogo} style={{float: 'right'}} />
         </nav>
         <div className="container">
 
           {pageName}
           <br />
           <table className="table table-striped">
-            <thead style={{backgroundColor: '#18232E', color: 'white'}}>
+            <thead style={{backgroundColor: '#18232E', color: '#ffc629'}}>
               {tableHeader}
             </thead>
             <tbody>
