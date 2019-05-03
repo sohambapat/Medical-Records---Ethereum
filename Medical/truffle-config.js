@@ -1,8 +1,8 @@
 const path = require("path");
 
-var HDWalletProvider = require("truffle-hdwallet-provider");
+/* var HDWalletProvider = require("./client/node_modules/truffle-hdwallet-provider");
 var infura_apikey = "XXXXXX"; // Not pushing my key
-var mnemonic = "twelve words you can find in metamask/settings/reveal seed words";  // Not pushing my seed words
+var mnemonic = "twelve words you can find in metamask/settings/reveal seed words";  // Not pushing my seed words */
 
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
@@ -15,9 +15,9 @@ module.exports = {
       port: 7545,
       network_id: "*" // Match any network id
     },
-    ropsten: {
+/*     ropsten: {
       provider: new HDWalletProvider(mnemonic, "https://ropsten.infura.io/"+infura_apikey),
       network_id: 3
-    }
+    } */
   }
 };
