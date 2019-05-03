@@ -21,8 +21,13 @@ contract SimpleStorage {
   	users[_address].push(Records(index, _firstName, _lastName, _doctor, _site, _date, x));
   }
 
-  function getLength(address _address) public view returns (uint){
-      return users[_address].length;
+  function setUser(address _address, string memory _status) public{
+    require(msg.sender == _address);
+    status[_address] = _status;
+    //return users[_address].length;
+  }
+  function getUser(address _address) public view returns (string memory){
+      return status[_address];
   }
 
   function getRecords(address _address) public view returns (Records[] memory){
