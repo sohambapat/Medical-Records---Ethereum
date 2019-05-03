@@ -1,8 +1,8 @@
 const path = require("path");
-
-/* var HDWalletProvider = require("./client/node_modules/truffle-hdwallet-provider");
-var infura_apikey = "XXXXXX"; // Not pushing my key
-var mnemonic = "twelve words you can find in metamask/settings/reveal seed words";  // Not pushing my seed words */
+                               //  ./client/node_modules/truffle-hdwallet-provider
+var HDWalletProvider = require("truffle-hdwallet-provider");
+var infura_apikey = "528eb380a5044c07a934acf2ca7773e2"; // Not pushing my key
+var mnemonic = "twin anchor library borrow output powder track coach tribe culture pear viable";  // Not pushing my seed words
 
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
@@ -15,9 +15,12 @@ module.exports = {
       port: 7545,
       network_id: "*" // Match any network id
     },
-/*     ropsten: {
-      provider: new HDWalletProvider(mnemonic, "https://ropsten.infura.io/"+infura_apikey),
-      network_id: 3
-    } */
+    ropsten: {
+      host: "127.0.0.1",
+      port: 8545,
+      provider: new HDWalletProvider(mnemonic, "https://ropsten.infura.io/v3/"+infura_apikey),
+      network_id: 3,
+      gas:4700000
+    }
   }
 };
