@@ -23,11 +23,15 @@ class App extends Component {
       buffer: null,
       account: null,
       records: [],
-      status: "Individua"
+      value: null, 
+      status: null
 
     }
+
     this.captureFile = this.captureFile.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.onSubmitUser = this.onSubmitUser.bind(this);
   }
 
   componentWillMount() {
@@ -62,16 +66,17 @@ class App extends Component {
           return this.simpleStorageInstance.getRecords(account, {from: account})
        }).then((records) => {
       //   // Update state with the result.
-         return this.setState({ records })
+          this.setState({ records })
+          return this.simpleStorageInstance.getUser(account, {from: account})
+      }).then((status)=>{
+        return this.setState({status})
       })
     })
   }
   handleInputChange = (event) => {
     event.preventDefault()
     //console.log(event.target.name + " " + event.target.value)
-    this.setState({[event.target.name]: event.target.value})
-    //console.log(event.target.name + " " + this.state.firstName)
-
+    this.setState({[event.target.name] : event.target.value})
   }
 
   captureFile = (event) => {
@@ -98,7 +103,18 @@ class App extends Component {
         console.log('ifpsHash', this.state.ipfsHash)
       })
     })
+
     //console.log(this.state.firstName + this.state.lastName + this.state.doctorName+ this.state.toAccount + this.state.hospitalName +this.state.date)
+  }
+
+
+  onSubmitUser(event){
+    event.preventDefault()
+    this.simpleStorageInstance.setUser(this.state.account, this.state.value, { from: this.state.account }).then((r) => {
+      console.log(this.state.value)
+      return this.setState({status: this.state.value})
+    })
+    //console.log("stored Value after submit: " + this.state.value)
   }
 
   patientCreateTableHeader = ()=>{
@@ -172,7 +188,7 @@ class App extends Component {
       return <h1>{this.state.records[0][4]}</h1>
    }
     else{
-      return <h1>User</h1>
+      return <h1 style={{fontFamily: '"Montserrat", sans-serif', fontWeight: 'bold'}}>User</h1>
     }
   }
 
@@ -189,9 +205,9 @@ class App extends Component {
     let pageName;
 
     if(this.state.status === "Individual"){
-        permissionButtonType = <a style={{backgroundColor: '#18232E', color: '#ffc629'}} className="btn" data-toggle="collapse"  href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Set Permission</strong></a>
+        permissionButtonType = <a style={{backgroundColor: '#000000', color: '#ffc629'}} className="btn" data-toggle="collapse"  href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Set Permission</strong></a>
         permissionButtonRender =<div className="collapse multi-collapse col-md-6" id="multiCollapseExample1">
-                                  <div className="card card-body" style={{backgroundColor: '#18232E', color: '#ffc629'}}>
+                                  <div className="card card-body" style={{backgroundColor: '#000000', color: '#ffc629'}}>
                                     <form>
                                       <div className="form-row">
                                         <div className="col-9">
@@ -201,13 +217,13 @@ class App extends Component {
                                           <input type="text" className="form-control form-control-sm" placeholder="#" />
                                         </div>
                                         <div className="col">
-                                          <button type="submit" className="btn btn-info btn-sm mb-2">Submit</button>
+                                          <button type="submit" className="btn btn-warning btn-sm mb-2">Submit</button>
                                         </div>
                                       </div>
                                     </form>
                                   </div>
                                 </div>
-        addButtonType = <a style={{backgroundColor: '#18232E', color: '#ffc629'}} className="btn" data-toggle="modal" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Add Record</strong></a>
+        addButtonType = <a style={{backgroundColor: '#000000', color: '#ffc629'}} className="btn" data-toggle="modal" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Add Record</strong></a>
         addButtonRender = <div className="modal fade" id="multiCollapseExample2" tabIndex={-1} role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div className="modal-dialog modal-dialog-centered" role="document">
                               <div className="modal-content">
@@ -233,7 +249,7 @@ class App extends Component {
     
     }
     else if(this.state.status === "Medical Center"){
-      permissionButtonType = <a style={{backgroundColor: '#18232E', color: '#ffc629'}} className="btn" data-toggle="modal" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Set Permission</strong></a>
+      permissionButtonType = <a style={{backgroundColor: '#000000', color: '#ffc629'}} className="btn" data-toggle="modal" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Set Permission</strong></a>
       permissionButtonRender =<div className="modal fade" id="multiCollapseExample1" tabIndex={-1} role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div className="modal-dialog modal-dialog-centered" role="document">
                                   <div className="modal-content">
@@ -252,9 +268,9 @@ class App extends Component {
                                   </div>
                                 </div>
                               </div>
-      addButtonType = <a style={{backgroundColor: '#18232E', color: '#ffc629'}} className="btn" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Add Record</strong></a>
+      addButtonType = <a style={{backgroundColor: '#000000', color: '#ffc629'}} className="btn" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><strong>Add Record</strong></a>
       addButtonRender = <div className="collapse multi-collapse col-md-6" id="multiCollapseExample2">
-                          <div className="card card-body" style={{backgroundColor: '#18232E', color: '#ffc629'}}>
+                          <div className="card card-body" style={{backgroundColor: '#000000', color: '#ffc629'}}>
                             <form onSubmit={this.onSubmit}>
                               <div className="form-group">
                                 <label htmlFor="doctorName"><strong>Doctor</strong></label>
@@ -287,7 +303,7 @@ class App extends Component {
                               
 
                         
-                              <button type="submit" className="btn btn-info btn-sm mb-2">Submit</button>
+                              <button type="submit" className="btn btn-warning btn-sm mb-2">Submit</button>
                             </form>
                           </div>
                         </div>
@@ -312,27 +328,29 @@ class App extends Component {
         <div className="container">
           <div className="jumbotron" style={{backgroundColor: '#000000', color: '#ffb51f', marginTop: '1%'}}>
             <div className>
-              <h1 className="display-4">KSU Medical BC</h1>
+              <h1 className="display-4" style={{fontFamily: '"Montserrat", sans-serif', fontWeight: 'bold'}}>KSU Medical BC</h1>
               <p className="lead" />
             </div>
           </div>
-          <div className="card col-md-6" style={{backgroundColor: '#000000', color: '#ffb51f', marginLeft: '25%'}}>
-            <h5 className="card-header">Sign Up</h5>
-            <div className="card-body">
-              <div className="input-group mb-3">
-                <div className="input-group-prepend">
-                  <label className="input-group-text" htmlFor="inputGroupSelect01">Options</label>
+          <form onSubmit={this.onSubmitUser}>
+            <div className="card col-md-6" style={{backgroundColor: '#000000', color: '#ffb51f', marginLeft: '25%'}}>
+              <h5 className="card-header">Sign Up</h5>
+              <div className="card-body">
+                <div className="input-group mb-3">
+                  <div className="input-group-prepend">
+                    <label className="input-group-text" htmlFor="inputGroupSelect01">Options</label>
+                  </div>
+                  <select className="custom-select" id="inputGroupSelect01" name="value" onChange = {this.handleInputChange}>
+                    <option selected>Choose...</option>
+                    <option value="Medical Center">Medical Center</option>
+                    <option value="Individual">Individual</option>
+                  </select>
                 </div>
-                <select className="custom-select" id="inputGroupSelect01">
-                  <option selected>Choose...</option>
-                  <option value={1}>Medical Center</option>
-                  <option value={2}>Individual</option>
-                </select>
+                <p className="card-text">{this.state.account}</p>
+                <button type="submit" className="btn btn-primary btn-sm mb-2">Submit</button>
               </div>
-              <p className="card-text">{this.state.account}</p>
-              <a href="#" className="btn btn-primary">Submit</a>
             </div>
-          </div>
+          </form>
         </div>
       </div>
 
@@ -352,7 +370,7 @@ class App extends Component {
           {pageName}
           <br />
           <table className="table table-striped">
-            <thead style={{backgroundColor: '#18232E', color: '#ffc629'}}>
+            <thead style={{backgroundColor: '#000000', color: '#ffc629'}}>
               {tableHeader}
             </thead>
             <tbody>
