@@ -319,7 +319,7 @@ class App extends Component {
       return(
       <div>
         <nav className="navbar" style={{backgroundColor: '#000000'}}>
-          <a className="navbar-brand" href="#" style={{color: '#ffb51f'}}>
+          <a className="navbar-brand" href="/" style={{color: '#ffb51f'}}>
             <i className="fas fa-laptop-medical" />
 
           </a>
@@ -360,7 +360,7 @@ class App extends Component {
     return (
       <div>
         <nav className="navbar" style={{backgroundColor: '#000000'}}>
-          <a className="navbar-brand" href="#" style={{color: '#ffc629'}}>
+          <a className="navbar-brand" href="/" style={{color: '#ffc629'}}>
             <i className="fas fa-laptop-medical" />
           </a>
             <img src= {ksuLogo} style={{float: 'right'}} />

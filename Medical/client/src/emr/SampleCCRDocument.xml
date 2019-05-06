@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="CDASchemas\cda\Schemas\ccr.xsl"?>
+<?xml-stylesheet type="text/xsl" href=".\CDASchemas\cda\Schemas\ccr.xsl"?>
 <!-- The following sample document is fictional. Any resemblance to a real person is coincidental. -->
 <ContinuityOfCareRecord xmlns="urn:astm-org:CCR" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:astm-org:CCR CCR_20051109.xsd">
 	<!-- 
